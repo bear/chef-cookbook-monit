@@ -1,0 +1,11 @@
+# /etc/monit/conf.d/unicorn
+check process unicorn
+  with pidfile <%= @pid_dir %>/unicorn.pid
+  alert <%= @alert_email %>
+  start program = "<%= @start_script %>"
+  stop program = "<%= @start_script %>"
+  if failed (url <%= @monitor_url %>
+     and content == 'Success')
+     timeout 10 seconds 3 cycles
+  then restart
+  group deploy

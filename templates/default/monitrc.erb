@@ -1,21 +1,27 @@
-set logfile syslog facility log_daemon
+set daemon <%= @poll_period %>
+  with start delay <%= @poll_start_delay %>
+
+set logfile    <%= @lib_dir %>/monit.log
+set idfile     <%= @lib_dir %>/id
+set statefile  <%= @lib_dir %>/state
 set mailserver localhost
-set daemon <%= @node[:monit][:poll_period] %>
-  with start delay <%= @node[:monit][:poll_delay] %>
 
 set eventqueue
-    basedir /var/monit
-
-set httpd port 3737 and
-    use address localhost
-    allow localhost
+    basedir <%= @lib_dir %>/events
+    slots 100
 
 set mail-format { 
-  from: <%= @node[:monit][:alert_mail_format][:from] %>
-  subject: <%= @node[:monit][:alert_mail_format][:subject] %>
-  message: <%= @node[:monit][:alert_mail_format][:message] %>
+  from: <%= @node[:monit][:mail_format][:from] %>
+  subject: <%= @node[:monit][:mail_format][:subject] %>
+  message: <%= @node[:monit][:mail_format][:message] %>
 }
 
-set alert <%= @node[:monit][:notify_email] %> NOT ON { action, instance, pid, ppid }
+set alert <%= @notify_email %> NOT ON { action, instance, pid, ppid }
+
+set httpd port <%= @http_admin[:port] %> and
+    use address localhost
+    allow localhost
+    allow <%= @http_admin[:id] %>:<%= @http_admin[:password] %>
 
 include /etc/monit/conf.d/*.conf
+

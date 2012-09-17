@@ -1,19 +1,13 @@
-maintainer        "Bear"
-maintainer_email  "bear@code-bear.com"
-license           "All rights reserved"
-description       "Installs and configures monit"
-long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "0.5.0"
-recipe            "monit", "Installs the monit package"
+maintainer       "Mike Taylor"
+maintainer_email "bear@andyet.net"
+license          "MIT"
+description      "Configures monit.  Originally based off the 37 Signals Cookbook."
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+version          "0.7"
 
-%w{ ubuntu debian fedora suse }.each do |os|
-  supports os
-end
-
-depends "apt"
 
 attribute 'monit/notify_email', 
-  :description => 'Alert email address',
+  :description => 'The email address to send alerts to.',
   :type => "string",
   :required => "recommended"
 
@@ -23,6 +17,7 @@ attribute 'monit/poll_period',
   :required => "recommended"
 
 attribute 'monit/poll_start_delay',
-  :description => 'How long monit waits before it checks are performed',
+  :description => 'When monit first starts, how long to delay before it starts performing checks',
   :type => "string",
   :required => "recommended"
+

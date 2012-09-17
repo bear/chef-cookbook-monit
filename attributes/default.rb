@@ -1,13 +1,14 @@
-default[:monit][:poll_period]  = 60
-default[:monit][:poll_delay]   = 120
-default[:monit][:notify_email] = "notify@example.com"
+default[:monit][:notify_email]          = "notify@example.com"
 
-default[:monit][:alert_mail_format][:subject] = "[monit] $SERVICE ($EVENT)"
-default[:monit][:alert_mail_format][:from]    = "monit@foo.com"
-default[:monit][:alert_mail_format][:message] = <<-EOS
-The monit daemon has performed the following:
-  $DATE $HOST
-  $ACTION $SERVICE
-  
-  $DESCRIPTION
+default[:monit][:poll_period]           = 120
+default[:monit][:poll_start_delay]      = 0
+
+default[:monit][:lib_dir]               = "/var/lib/monit"
+
+default[:monit][:mail_format][:subject] = "$SERVICE $EVENT"
+default[:monit][:mail_format][:from]    = "monit@example.com"
+default[:monit][:mail_format][:message] = <<-EOS
+Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION.
+Yours sincerely,
+monit
 EOS
